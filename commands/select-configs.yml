@@ -1,0 +1,28 @@
+description: Select configs based on changes made onto the repository
+parameters:
+  module-list-file:
+    description: |
+      Path to the file which lists directories to be examined for changes.
+      Each directory must contain a file `.circleci-config-dependencies`, which lists configs to be executed when changes are made on the directory.
+    type: string
+  output:
+    description: Path for the resulting file to list configs
+    type: string
+  base-revision:
+    description: Revision to compare with the current HEAD
+    type: string
+    default: main
+  force-all:
+    description: Emergency valve - forcibly build all the modules
+    type: boolean
+    default: false
+steps:
+  - run:
+      name: Generate the list of modules having changes
+      environment:
+        MODULE_LIST_FILE: << parameters.module-list-file >>
+        OUTPUT: << parameters.output >>
+        BASE_REVISION: << parameters.base-revision >>
+        FORCE_ALL: << parameters.force-all >>
+        CONFIG_DEPENDENCIES_FILE: .circleci-config-dependencies
+      command: << include(scripts/select-configs.sh) >>

@@ -1,0 +1,6 @@
+description: Prerequisite steps to utilize this orb
+steps:
+  - checkout
+  - run:
+      name: Install yq
+      command: pip install yq

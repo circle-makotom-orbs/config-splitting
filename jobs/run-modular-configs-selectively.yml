@@ -1,0 +1,44 @@
+description: Select "modular" configs to include based on file changes and run the selected configs by combining them
+parameters:
+  # Required parameters
+  module-list-file:
+    description: Path to the file which lists directories to be examined for changes
+    type: string
+
+  # Optional parameters
+  shared-config-file:
+    description: Path to the config providing shared resources (such as prerequisite jobs and common commands)
+    type: string
+    default: .circleci/continue-shared.yml
+  base-revision:
+    description: Revision to compare with the current HEAD
+    type: string
+    default: main
+  force-all:
+    description: Emergency valve - forcibly build all the modules
+    type: boolean
+    default: false
+
+  # Parameters not intended for customizations
+  config-list-file:
+    description: Path to the file where the list of configs to be combined generated
+    type: string
+    default: /tmp/selected-configs.txt
+  continuation-config:
+    description: Path to the file the combined config will be saved
+    type: string
+    default: /tmp/continuation-config.yml
+executor: default
+steps:
+  - prepare
+  - select-configs:
+      module-list-file: << parameters.module-list-file >>
+      output: << parameters.config-list-file >>
+      base-revision: << parameters.base-revision >>
+      force-all: << parameters.force-all >>
+  - combine-configs:
+      config-list-file: << parameters.config-list-file >>
+      shared-config-file: << parameters.shared-config-file >>
+      output: << parameters.continuation-config >>
+  - continuation/continue:
+      configuration_path: << parameters.continuation-config >>

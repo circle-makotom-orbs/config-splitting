@@ -1,0 +1,3 @@
+description: The executor used by this orb by default
+docker:
+  - image: cimg/python:3.9

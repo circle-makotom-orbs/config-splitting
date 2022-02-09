@@ -1,0 +1,27 @@
+description: Combine statically-listed "modular" configs and run the result
+parameters:
+  # Required parameters
+  config-list-file:
+    description: Path to the file which lists configs to be combined
+    type: string
+
+  # Optional parameters
+  shared-config-file:
+    description: Path to the config providing shared resources (such as prerequisite jobs and common commands)
+    type: string
+    default: .circleci/continue-shared.yml
+
+  # Parameters not intended for customizations
+  continuation-config:
+    description: Path to the file the combined config will be saved
+    type: string
+    default: /tmp/continuation-config.yml
+executor: default
+steps:
+  - prepare
+  - combine-configs:
+      config-list-file: << parameters.config-list-file >>
+      shared-config-file: << parameters.shared-config-file >>
+      output: << parameters.continuation-config >>
+  - continuation/continue:
+      configuration_path: << parameters.continuation-config >>

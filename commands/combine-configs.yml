@@ -1,0 +1,19 @@
+description: Combine designated "modular" configs to a single executable config
+parameters:
+  config-list-file:
+    description: Path to the file listing configs to combine
+    type: string
+  shared-config-file:
+    description: Path to the config providing shared resources (such as prerequisite jobs and common commands)
+    type: string
+  output:
+    description: Path for the resulting config
+    type: string
+steps:
+  - run:
+      name: Combine configs
+      environment:
+        CONFIG_LIST_ORIGINAL: << parameters.config-list-file >>
+        SHARED_CONFIG_FILE: << parameters.shared-config-file >>
+        OUTPUT: << parameters.output >>
+      command: << include(scripts/combine-configs.sh) >>
