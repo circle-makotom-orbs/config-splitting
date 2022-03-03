@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 # If `config-list-file` is unavailable, stop this job without continuation
 if [[ ! -s "${CONFIG_LIST_ORIGINAL}" ]]; then
     echo 'Nothing to combine. Halting the job.'
