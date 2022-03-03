@@ -1,11 +1,13 @@
 #!/bin/bash
 
+set -euo pipefail
+
 touch "${OUTPUT}"
 
 DIFFS=$(
     cat <<EOD
 $(git diff --name-only "${BASE_REVISION}")
-$(git diff --name-only HEAD~1 || git ls-tree --name-only HEAD)
+$(git diff --name-only HEAD~1 || git ls-tree -r --name-only HEAD)
 EOD
 )
 export DIFFS
