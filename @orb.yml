@@ -4,7 +4,7 @@ description: The config-splitting orb - split your config into modules and combi
 
 display:
   home_url: "https://makotom.org/"
-  source_url: "https://github.com/circle-makotom/config-splitting-orb"
+  source_url: "https://github.com/circle-makotom-orbs/config-splitting"
 
 orbs:
   continuation: circleci/continuation@0.2.0
