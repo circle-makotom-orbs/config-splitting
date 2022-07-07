@@ -18,4 +18,6 @@ if [[ -s "${SHARED_CONFIG_FILE}" ]]; then
 fi
 
 # shellcheck disable=SC2016
-xargs -a "${CONFIG_LIST_MODIFIED}" yq -y -s 'reduce .[] as $item ({}; . * $item)' | tee "${OUTPUT}"
+# NOTE: we use --yaml-roundtrip (-Y) instead of --yaml-output (-y) to preserve YAML tags and styles.
+# We want to keep users' config YAML files as-is
+xargs -a "${CONFIG_LIST_MODIFIED}" yq -Y -s 'reduce .[] as $item ({}; . * $item)' | tee "${OUTPUT}"
