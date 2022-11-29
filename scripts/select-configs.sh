@@ -17,7 +17,7 @@ while read -r module; do
     #   1)  `force-all` is set to `true`,
     #   2)  there is any difference against `base-revision` or `HEAD~1` (the previous commit), or
     #   3)  there is no `HEAD~1` (i.e., this is the very first commit for the repo).
-    if [[ "${FORCE_ALL}" == 'true' ]] || printenv DIFFS | grep -qs "${module}"; then
+    if [[ "${FORCE_ALL}" == 'true' ]] || printenv DIFFS | grep -qs "^${module%%*(/)}"; then
         cat "${module}/${CONFIG_DEPENDENCIES_FILE}" >>"${OUTPUT}"
     fi
 done <"${MODULE_LIST_FILE}"
