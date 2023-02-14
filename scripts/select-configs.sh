@@ -19,6 +19,9 @@ while read -r module; do
     #   3)  there is no `HEAD~1` (i.e., this is the very first commit for the repo).
     if [[ "${FORCE_ALL}" == 'true' ]] || printenv DIFFS | grep -qs "^${module%%*(/)}"; then
         cat "${module}/${CONFIG_DEPENDENCIES_FILE}" >>"${OUTPUT}"
+        if [ "$(tail -c 1 "${OUTPUT}")" != "" ]; then
+            echo >>"${OUTPUT}"
+        fi
     fi
 done <"${MODULE_LIST_FILE}"
 
